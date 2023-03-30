@@ -11,3 +11,11 @@
     color: var(--light);
     font-family: Arial, Helvetica, sans-serif;
 }
+.custom-button {
+    background-color: var(--lightteal);
+    color: rgb(63, 63, 63)
+}
+.custom-button:hover {
+    background-color: var(--tan);
+    color: black
+}
