@@ -13,7 +13,7 @@ searchBtn.click(function() {
     var searchInput = $('.form-control');
     var currentWeather = "https://api.openweathermap.org/data/2.5/weather?q=" + searchInput + "&appid=" + APIkey + "&units=imperial";
     var fiveDayForcast = "api.openweathermap.org/data/2.5/forecast?q=" + searchInput + "&appid=" + APIkey + "&units=imperial";
-     if searchInput == "") { 
+     if (searchInput == "") { 
          console.log(searchInput);
      } else {
         $.ajax({
@@ -42,6 +42,18 @@ searchBtn.click(function() {
             currentTemp.append("<p>" + "Humidity: " + response.main.humidity + "%" + "</p>");
     
             currentTemp.append("<p>" + "Wind Speed: " + response.wind.speed + "</p>");
+
+            var urlUV = `https://api.openweathermap.org/data/2.5/uvi?appid=792acd53a4130029a12f98144cca09f3&lat=${response.coord.lat}&lon=${response.coord.lon}`;
+
+            $.ajax({
+                url: urlUV,
+                method: "GET"
+            }).then(function (response) {
+
+                var currentUV = currentTemp.append("<p>" + "UV Index: " + response.value + "</p>").addClass("card-text");
+                currentUV.addClass("UV");
+                currentTemp.append(currentUV);
         })
      }
-    });
+        )}
+    })
