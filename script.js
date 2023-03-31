@@ -54,6 +54,21 @@ searchBtn.click(function() {
                 currentUV.addClass("UV");
                 currentTemp.append(currentUV);
         })
-     }
-        )}
     })
+}
+        $.ajax({
+            url: urlFiveDay,
+            method: "GET"
+        }).then(function (response) {
+            var day = [0, 8, 16, 24, 32];
+            var fiveDayCard = $(".fiveDayCard").addClass("card-body");
+            var fiveDayDiv = $(".fiveDayOne").addClass("card-text");
+            fiveDayDiv.empty();
+            day.forEach(function (i) {
+                var FiveDayTimeUTC1 = new Date(response.list[i].dt * 1000);
+                FiveDayTimeUTC1 = FiveDayTimeUTC1.toLocaleDateString("en-US");
+
+                fiveDayDiv.append("<div class=fiveDayColor>" + "<p>" + FiveDayTimeUTC1 + "</p>" + `<img src="https://openweathermap.org/img/wn/${response.list[i].weather[0].icon}@2x.png">` + "<p>" + "Temperature: " + response.list[i].main.temp + "</p>" + "<p>" + "Humidity: " + response.list[i].main.humidity + "%" + "</p>" + "</div>");
+    })
+})
+})
