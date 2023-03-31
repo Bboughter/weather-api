@@ -1,19 +1,9 @@
 var APIkey = "792acd53a4130029a12f98144cca09f3";
 var searchBtn = $(".btn");
-var searchInput = document.querySelector('.form-control')
+var searchInput = document.querySelector('.search')
 
 
-
-searchBtn.click(function (event) {
-    event.preventDefault();
-    var city = searchInput.value.trim();
-    if (city) {
-        weatherQuery(city);
-        city.value = "";
-    }
-});
-
-function weatherQuery() {
+searchBtn.addEventListener('click', function () {
 
     var queryCurrentWeather = "https://api.openweathermap.org/data/2.5/weather?q=" + searchInput + "&appid=" + APIkey + "&units=imperial";
     fetch(queryCurrentWeather)
@@ -22,11 +12,13 @@ function weatherQuery() {
     })
     .then(function(data) {
         console.log(data);
-    printCurrentWeather();
+        var dateCurrent = dayjs.unix(data.dt).format('MM/DD/YYYY');
+        var currentWeather = document.querySelector('.current-card');
+        currentWeather.innerHTML='';
     })
-}
+})
 
-var currentWeather = document.querySelector(".current-card");
+
 
 function printCurrentWeather()  {
 
