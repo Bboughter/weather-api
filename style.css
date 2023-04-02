@@ -4,17 +4,48 @@
     --teal: #71a8a7;
     --lightteal: #d5f5f5;
     --light: #fffaf7;
-  }
-  
-body{
+}
+
+body {
     background-color: var(--teal);
     font-family: Arial, Helvetica, sans-serif;
 }
+
+header {
+    text-align: center;
+}
+
 .custom-button {
     background-color: var(--lightteal);
     color: rgb(63, 63, 63)
 }
+
 .custom-button:hover {
     background-color: var(--tan);
     color: black
+}
+
+.current-card {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin: 20px;
+    margin-left: 450px;
+    text-align: center;
+    width: 600px;
+    justify-content: center;
+}
+.five-day {
+    text-align: center;
+}
+.day-forecast {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin: 20px;
+    text-align: center;
+    width: 200px;
+    display: inline-block;
 }
