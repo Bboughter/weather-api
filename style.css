@@ -6,9 +6,8 @@
     --light: #fffaf7;
   }
   
-* {
+body{
     background-color: var(--teal);
-    color: var(--light);
     font-family: Arial, Helvetica, sans-serif;
 }
 .custom-button {
