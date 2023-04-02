@@ -59,6 +59,7 @@ function getCurrentWeatherAPI(event) {
         .then(function (data) {
             console.log(data);
 
+
             var searches = JSON.parse(localStorage.getItem('searchedCities'));
             if (searches) {
                 searchedCities = []
@@ -91,7 +92,6 @@ function getCurrentWeatherAPI(event) {
 
             var currentHumidity = document.querySelector('.humidity')
             currentHumidity.innerHTML = currentHumidity.innerHTML + ' ' + data.main.humidity + '%'
-
 
             getFiveDayWeatherData()
             displayCities()

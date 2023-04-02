@@ -24,6 +24,10 @@ header {
     background-color: var(--tan);
     color: black
 }
+.cities-searched {
+  
+  text-indent: 0%;
+}
 
 .current-card {
     background-color: #fff;
