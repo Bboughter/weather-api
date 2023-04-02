@@ -69,10 +69,20 @@ function getCurrentWeatherAPI(event) {
 
 
             var dateCurrent = dayjs.unix(data.dt).format('MM/DD/YYYY');
+           
             var currentWeather = document.querySelector('.current-card');
+            
             var currentDate = currentWeather.querySelector('.date')
             currentDate.innerHTML = currentDate.innerHTML + ' ' + dateCurrent
-
+           
+            var currentDayIcon = document.createElement('img');
+            currentDayIcon.src = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+            currentDayIcon.alt = 'weather icon';
+            currentDayIcon.width = 150;
+            currentDayIcon.height = 150;
+           
+            currentWeather.append(currentDayIcon)
+            
             var currentTemp = document.querySelector('.temperature')
             currentTemp.innerHTML = currentTemp.innerHTML + ' ' + data.main.temp + '°F'
 
@@ -81,6 +91,7 @@ function getCurrentWeatherAPI(event) {
 
             var currentHumidity = document.querySelector('.humidity')
             currentHumidity.innerHTML = currentHumidity.innerHTML + ' ' + data.main.humidity + '%'
+
 
             getFiveDayWeatherData()
             displayCities()
