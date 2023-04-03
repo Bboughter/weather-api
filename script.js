@@ -7,7 +7,7 @@ var searchedCities = []
 searchBtn.on('click', getCurrentWeatherAPI)
 
 
-function displayFiveDayForecast(card, date, temp, wind, humidity) {
+function displayFiveDayForecast(card, date, temp, wind, humidity, icon) {
     var dateCurrent = dayjs.unix(date).format('MM/DD/YYYY');
     var fiveDayImage = card.querySelector('card-heading')
     var fiveDayDate = card.querySelector('.date')
@@ -19,10 +19,19 @@ function displayFiveDayForecast(card, date, temp, wind, humidity) {
     fiveDayTemp.innerHTML = fiveDayTemp.innerHTML + ' ' + temp + '°F';
     fiveDayWind.innerHTML = fiveDayWind.innerHTML + ' ' + + wind + 'MPH';
     fiveDayHumidity.innerHTML = fiveDayHumidity.innerHTML + ' ' + humidity + '%'
-    // fiveDayIcon.src = icon + `https://openweathermap.org/img/w/${weatherData.list[i].weather[0].icon}.png`;
-    // currentDayIcon.alt = 'weather icon';
-    // currentDayIcon.width = 150;
-    // currentDayIcon.height = 150;
+    // fiveDayIcon.setAttribute('src', `https://openweathermap.org/img/w/${icon}.png`)
+    // fiveDayIcon.setAttribute('alt', 'weather icons')
+    // fiveDayIcon.setAttribute('width', '50')
+    // fiveDayIcon.setAttribute('height', '50')
+
+    var fiveDayImage = card.querySelector('.card-heading');
+    if (fiveDayImage) {
+        var fiveDayIcon = document.createElement('img');
+        fiveDayIcon.src = 'https://openweathermap.org/img/w/10d.png';
+        fiveDayIcon.alt = 'weather icons';
+        fiveDayImage.append(fiveDayIcon);
+    }
+
     // fiveDayImage.append(fiveDayIcon)
 }
 
@@ -43,9 +52,9 @@ function getFiveDayWeatherData() {
                 var temp = weatherData.list[i].main.temp
                 var humidity = weatherData.list[i].main.humidity
                 var wind = weatherData.list[i].wind.speed
-                // var icon = weatherData.list[i].weather[0].icon
+                var icon = weatherData.list[i].weather[0].icon
 
-                displayFiveDayForecast(fiveDayCards[index], unixDate, temp, wind, humidity)
+                displayFiveDayForecast(fiveDayCards[index], unixDate, temp, wind, humidity, icon)
                 index = index + 1
             }
         });
@@ -125,6 +134,10 @@ function clearWeatherData() {
         card.querySelector('.temperature').innerHTML = '';
         card.querySelector('.wind').innerHTML = '';
         card.querySelector('.humidity').innerHTML = '';
+        var currentDayIcon = document.querySelector('.current-card img');
+        if (currentDayIcon) {
+            currentDayIcon.remove();
+        }
     })
 }
 
