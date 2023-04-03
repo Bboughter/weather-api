@@ -9,16 +9,21 @@ searchBtn.on('click', getCurrentWeatherAPI)
 
 function displayFiveDayForecast(card, date, temp, wind, humidity) {
     var dateCurrent = dayjs.unix(date).format('MM/DD/YYYY');
-
+    var fiveDayImage = card.querySelector('card-heading')
     var fiveDayDate = card.querySelector('.date')
     var fiveDayTemp = card.querySelector('.temperature')
     var fiveDayWind = card.querySelector('.wind')
     var fiveDayHumidity = card.querySelector('.humidity')
-
+    // var fiveDayIcon = document.createElement('img')
     fiveDayDate.innerHTML = fiveDayDate.innerHTML + ' ' + dateCurrent;
     fiveDayTemp.innerHTML = fiveDayTemp.innerHTML + ' ' + temp + '°F';
-    fiveDayWind.innerHTML = fiveDayWind.innerHTML + ' ' + 'MPH';
-    fiveDayHumidity.innerHTML = fiveDayHumidity.innerHTML + ' ' + '%'
+    fiveDayWind.innerHTML = fiveDayWind.innerHTML + ' ' + + wind + 'MPH';
+    fiveDayHumidity.innerHTML = fiveDayHumidity.innerHTML + ' ' + humidity + '%'
+    // fiveDayIcon.src = icon + `https://openweathermap.org/img/w/${weatherData.list[i].weather[0].icon}.png`;
+    // currentDayIcon.alt = 'weather icon';
+    // currentDayIcon.width = 150;
+    // currentDayIcon.height = 150;
+    // fiveDayImage.append(fiveDayIcon)
 }
 
 function getFiveDayWeatherData() {
@@ -38,7 +43,7 @@ function getFiveDayWeatherData() {
                 var temp = weatherData.list[i].main.temp
                 var humidity = weatherData.list[i].main.humidity
                 var wind = weatherData.list[i].wind.speed
-
+                // var icon = weatherData.list[i].weather[0].icon
 
                 displayFiveDayForecast(fiveDayCards[index], unixDate, temp, wind, humidity)
                 index = index + 1
@@ -49,6 +54,8 @@ function getFiveDayWeatherData() {
 
 function getCurrentWeatherAPI(event) {
     event.preventDefault();
+
+    clearWeatherData();
 
     var queryCurrentWeather = "https://api.openweathermap.org/data/2.5/weather?q=" + searchInput.value + "&appid=" + APIkey + "&units=imperial";
 
@@ -70,20 +77,20 @@ function getCurrentWeatherAPI(event) {
 
 
             var dateCurrent = dayjs.unix(data.dt).format('MM/DD/YYYY');
-           
+
             var currentWeather = document.querySelector('.current-card');
-            
+
             var currentDate = currentWeather.querySelector('.date')
             currentDate.innerHTML = currentDate.innerHTML + ' ' + dateCurrent
-           
+
             var currentDayIcon = document.createElement('img');
             currentDayIcon.src = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
             currentDayIcon.alt = 'weather icon';
             currentDayIcon.width = 150;
             currentDayIcon.height = 150;
-           
+
             currentWeather.append(currentDayIcon)
-            
+
             var currentTemp = document.querySelector('.temperature')
             currentTemp.innerHTML = currentTemp.innerHTML + ' ' + data.main.temp + '°F'
 
@@ -96,15 +103,46 @@ function getCurrentWeatherAPI(event) {
             getFiveDayWeatherData()
             displayCities()
         }
-        )}
+        )
+}
 
-    function displayCities() {
-        searchResultsEl.innerHTML = ""
-        if (searchedCities) {
-            searchedCities.forEach(item => {
-                var displayEl = document.createElement('li');
-                displayEl.textContent = item;
-                searchResultsEl.appendChild(displayEl);
-            })
-        }
+function clearWeatherData() {
+    // clear current weather data
+    var currentWeather = document.querySelector('.current-card');
+    currentWeather.querySelector('.date').innerHTML = '';
+    currentWeather.querySelector('.temperature').innerHTML = '';
+    currentWeather.querySelector('.wind').innerHTML = '';
+    currentWeather.querySelector('.humidity').innerHTML = '';
+    var currentDayIcon = document.querySelector('.current-card img');
+    if (currentDayIcon) {
+        currentDayIcon.remove();
     }
+
+    // clear five day weather data
+    var fiveDayCards = document.querySelectorAll('.day-forecast')
+    fiveDayCards.forEach(card => {
+        card.querySelector('.date').innerHTML = '';
+        card.querySelector('.temperature').innerHTML = '';
+        card.querySelector('.wind').innerHTML = '';
+        card.querySelector('.humidity').innerHTML = '';
+    })
+}
+
+function displayCities() {
+    searchResultsEl.innerHTML = "";
+
+    if (searchedCities) {
+        searchedCities.forEach(item => {
+            var displayEl = document.createElement("li");
+            var displayButton = document.createElement("button");
+            displayButton.textContent = item;
+            displayButton.addEventListener("click", function () {
+
+                getCurrentWeatherAPI(this.textContent);
+            });
+
+            displayEl.appendChild(displayButton);
+            searchResultsEl.appendChild(displayEl);
+        });
+    }
+}
