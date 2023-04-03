@@ -14,25 +14,21 @@ function displayFiveDayForecast(card, date, temp, wind, humidity, icon) {
     var fiveDayTemp = card.querySelector('.temperature')
     var fiveDayWind = card.querySelector('.wind')
     var fiveDayHumidity = card.querySelector('.humidity')
-    // var fiveDayIcon = document.createElement('img')
+
     fiveDayDate.innerHTML = fiveDayDate.innerHTML + ' ' + dateCurrent;
     fiveDayTemp.innerHTML = fiveDayTemp.innerHTML + ' ' + temp + '°F';
     fiveDayWind.innerHTML = fiveDayWind.innerHTML + ' ' + + wind + 'MPH';
     fiveDayHumidity.innerHTML = fiveDayHumidity.innerHTML + ' ' + humidity + '%'
-    // fiveDayIcon.setAttribute('src', `https://openweathermap.org/img/w/${icon}.png`)
-    // fiveDayIcon.setAttribute('alt', 'weather icons')
-    // fiveDayIcon.setAttribute('width', '50')
-    // fiveDayIcon.setAttribute('height', '50')
+
 
     var fiveDayImage = card.querySelector('.card-heading');
     if (fiveDayImage) {
         var fiveDayIcon = document.createElement('img');
-        fiveDayIcon.src = 'https://openweathermap.org/img/w/10d.png';
+        fiveDayIcon.src = `https://openweathermap.org/img/w/${icon}.png`;
         fiveDayIcon.alt = 'weather icons';
         fiveDayImage.append(fiveDayIcon);
     }
 
-    // fiveDayImage.append(fiveDayIcon)
 }
 
 function getFiveDayWeatherData() {
@@ -76,13 +72,9 @@ function getCurrentWeatherAPI(event) {
             console.log(data);
 
 
-            var searches = JSON.parse(localStorage.getItem('searchedCities'));
-            if (searches) {
-                searchedCities = []
-                searches.forEach(search => searchedCities.push(search))
-            }
-            searchedCities.push(searchInput.value);
-            localStorage.setItem('searchedCities', JSON.stringify(searchedCities))
+            var searches = JSON.parse(localStorage.getItem('searchedCities')) || [];
+            searches.push(searchInput.value);
+            localStorage.setItem('searchedCities', JSON.stringify(searches));
 
 
             var dateCurrent = dayjs.unix(data.dt).format('MM/DD/YYYY');
@@ -134,28 +126,26 @@ function clearWeatherData() {
         card.querySelector('.temperature').innerHTML = '';
         card.querySelector('.wind').innerHTML = '';
         card.querySelector('.humidity').innerHTML = '';
-        var currentDayIcon = document.querySelector('.current-card img');
-        if (currentDayIcon) {
-            currentDayIcon.remove();
-        }
+        card.querySelector('.card-heading').innerHTML = ''
+      
     })
 }
 
 function displayCities() {
-    searchResultsEl.innerHTML = "";
-
-    if (searchedCities) {
-        searchedCities.forEach(item => {
-            var displayEl = document.createElement("li");
-            var displayButton = document.createElement("button");
-            displayButton.textContent = item;
-            displayButton.addEventListener("click", function () {
-
-                getCurrentWeatherAPI(this.textContent);
-            });
-
-            displayEl.appendChild(displayButton);
-            searchResultsEl.appendChild(displayEl);
-        });
-    }
-}
+    var searchResultsEl = document.querySelector('.cities-searched');
+    searchResultsEl.innerHTML = '';
+  
+    // get list of searched cities from local storage
+    var searches = JSON.parse(localStorage.getItem('searchedCities')) || [];
+  
+    // create a button for each city
+    searches.forEach(function(city) {
+      var btn = document.createElement('button');
+      btn.textContent = city;
+      btn.addEventListener('click', function() {
+        searchInput.value = city;
+        getCurrentWeatherAPI(event);
+      });
+      searchResultsEl.appendChild(btn);
+    });
+  }
