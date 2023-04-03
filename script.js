@@ -4,9 +4,10 @@ var searchInput = document.querySelector('.search')
 var searchResultsEl = document.querySelector('.cities-searched')
 var searchedCities = []
 
+//event listener for search button
 searchBtn.on('click', getCurrentWeatherAPI)
 
-
+//function for display 5 day forcast
 function displayFiveDayForecast(card, date, temp, wind, humidity, icon) {
     var dateCurrent = dayjs.unix(date).format('MM/DD/YYYY');
     var fiveDayImage = card.querySelector('card-heading')
@@ -30,7 +31,7 @@ function displayFiveDayForecast(card, date, temp, wind, humidity, icon) {
     }
 
 }
-
+//function to get the date from the API for the 5 day forecast
 function getFiveDayWeatherData() {
 
     var queryFiveDayWeather = "https://api.openweathermap.org/data/2.5/forecast?q=" + searchInput.value + "&appid=" + APIkey + "&units=imperial";
@@ -56,7 +57,7 @@ function getFiveDayWeatherData() {
         });
 };
 
-
+//function to get date from the API for the current weather for the searched city
 function getCurrentWeatherAPI(event) {
     event.preventDefault();
 
@@ -106,9 +107,9 @@ function getCurrentWeatherAPI(event) {
         }
         )
 }
-
+ // clear current weather data
 function clearWeatherData() {
-    // clear current weather data
+    
     var currentWeather = document.querySelector('.current-card');
     currentWeather.querySelector('.date').innerHTML = '';
     currentWeather.querySelector('.temperature').innerHTML = '';
@@ -127,25 +128,25 @@ function clearWeatherData() {
         card.querySelector('.wind').innerHTML = '';
         card.querySelector('.humidity').innerHTML = '';
         card.querySelector('.card-heading').innerHTML = ''
-      
+
     })
 }
 
 function displayCities() {
     var searchResultsEl = document.querySelector('.cities-searched');
     searchResultsEl.innerHTML = '';
-  
+
     // get list of searched cities from local storage
     var searches = JSON.parse(localStorage.getItem('searchedCities')) || [];
-  
+
     // create a button for each city
-    searches.forEach(function(city) {
-      var btn = document.createElement('button');
-      btn.textContent = city;
-      btn.addEventListener('click', function() {
-        searchInput.value = city;
-        getCurrentWeatherAPI(event);
-      });
-      searchResultsEl.appendChild(btn);
+    searches.forEach(function (city) {
+        var btn = document.createElement('button');
+        btn.textContent = city;
+        btn.addEventListener('click', function () {
+            searchInput.value = city;
+            getCurrentWeatherAPI(event);
+        });
+        searchResultsEl.appendChild(btn);
     });
-  }
+}
